@@ -8,7 +8,7 @@ require("dotenv").config();
 app.use(cors());
 
 // Configura tu API key de Google Maps a través de una variable de entorno
-const GOOGLE_MAPS_API_KEY = "AIzaSyBY5fqHDVdAiWD6dLVGDLiaW1iqo_WV2qA";
+const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
 
 // Proxy middleware para Google Places API
 app.use(
