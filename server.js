@@ -17,13 +17,29 @@ app.use(
     target: "https://maps.googleapis.com",
     changeOrigin: true,
     pathRewrite: (path, req) => {
-      // Reemplaza la URL de la solicitud para agregar los parámetros de ubicación
+      // Extraer parámetros de la solicitud
       const location = req.query.location;
       const radius = req.query.radius || 3000;
-      const type = req.query.type || "hotel";
-      const keyword = req.query.keyword || "hotel";
+      const type = req.query.type || ""; // El tipo puede ser opcional
+      const keyword = req.query.keyword || ""; // El keyword puede ser opcional
 
-      return `/maps/api/place/nearbysearch/json?location=${location}&radius=${radius}&type=${type}&keyword=${keyword}&key=${GOOGLE_MAPS_API_KEY}`;
+      // Construir la URL condicionalmente
+      let newPath = `/maps/api/place/nearbysearch/json?location=${location}&radius=${radius}`;
+
+      // Solo agregar type si está definido
+      if (type) {
+        newPath += `&type=${type}`;
+      }
+
+      // Solo agregar keyword si está definido
+      if (keyword) {
+        newPath += `&keyword=${keyword}`;
+      }
+
+      // Agregar la API key
+      newPath += `&key=${GOOGLE_MAPS_API_KEY}`;
+
+      return newPath;
     },
     onProxyRes: function (proxyRes, req, res) {
       proxyRes.headers["Access-Control-Allow-Origin"] = "*"; // Agregar encabezado CORS
